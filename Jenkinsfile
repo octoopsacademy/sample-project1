@@ -12,6 +12,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
+                git branch: 'main',
                 git credentialsId: 'github-creds', url: 'https://github.com/octoopsacademy/sample-project1.git'
             }
         }
