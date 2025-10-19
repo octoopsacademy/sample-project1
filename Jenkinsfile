@@ -74,7 +74,7 @@ pipeline {
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/service.yaml
 
-                    kubectl rollout status deployment/octoopsacademy-deployment
+                    kubectl rollout status deployment/octoopsacademy
                 '''
             }
         }
