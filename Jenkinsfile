@@ -3,9 +3,9 @@ pipeline {
 
     environment {
         AWS_REGION = "ap-south-1"                  
-        ECR_REPO = "sample-proj1"               
+        ECR_REPO = "657399551937.dkr.ecr.ap-south-1.amazonaws.com/sample-proj1"               
         AWS_ACCOUNT_ID = "657399551937"           
-        IMAGE = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+        IMAGE_TAG = "latest"
     }
 
     stages {
@@ -53,7 +53,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t $IMAGE:latest .
+                    docker build -t $ECR_REPO:$IMAGE_TAG .
                 '''
             }
         }
@@ -61,7 +61,7 @@ pipeline {
         stage('Push Image to ECR') {
             steps {
                 sh '''
-                    docker push $IMAGE:latest
+                    docker push $ECR_REPO:$IMAGE_TAG
                 '''
             }
         }
@@ -69,7 +69,7 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 sh '''
-                    sed -i "s|image:.*|image: $IMAGE:latest|" k8s/deployment.yaml
+                    sed -i "s|image:.*|image: $ECR_REPO:latest|" k8s/deployment.yaml
 
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/service.yaml
