@@ -10,10 +10,13 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                git credentialsId: 'github-creds', url: 'https://github.com/octoopsacademy/sample-project1.git'
+                git(
+                    branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/octoopsacademy/sample-project1.git'
+                )
             }
         }
 
