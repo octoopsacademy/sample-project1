@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OcotoOps Academy - V1</title>
+  <style>
+    :root{
+      --bg: linear-gradient(135deg,#ff9a9e 0%, #fad0c4 50%, #fbc2eb 100%);
+      --card: rgba(255,255,255,0.9);
+      --accent: #5b21b6;
+      --accent-2: #f59e0b;
+    }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--bg);
+    }
+    .container{
+      width:min(920px,95%);
+      background:var(--card);
+      border-radius:16px;
+      box-shadow: 0 12px 30px rgba(16,24,40,0.15);
+      padding:28px;
+      backdrop-filter: blur(6px);
+    }
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),#06b6d4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:20px;
+      box-shadow: 0 6px 18px rgba(59,130,246,0.15);
+    }
+    h1{
+      margin:0;
+      font-size:28px;
+      color:#111827;
+      letter-spacing: -0.5px;
+    }
+    p.lead{
+      margin:6px 0 20px 0;
+      color:#374151;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.85));
+      padding:18px;
+      border-radius:12px;
+      margin-top:12px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.05);
+    }
+
+    /* Calculator */
+    .calculator{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .calc-input{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    input[type="number"]{
+      width:140px;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      font-size:16px;
+    }
+    select{
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      font-size:16px;
+    }
+    button{
+      padding:10px 14px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 12px rgba(99,102,241,0.12);
+    }
+    .btn-primary{ background: linear-gradient(90deg,var(--accent),#06b6d4); color:white; }
+    .btn-clear{ background:#f3f4f6; color:#111827; }
+
+    .result{
+      padding:12px;
+      border-radius:10px;
+      min-width:170px;
+      text-align:center;
+      font-weight:700;
+      font-size:20px;
+      color:#111827;
+      background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(91,33,182,0.06));
+    }
+
+    footer{
+      margin-top:18px;
+      color:#6b7280;
+      font-size:13px;
+    }
+    @media (max-width:600px){
+      .calc-input{flex-direction:column; align-items:stretch;}
+      input[type="number"]{width:100%;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">OA</div>
+      <div>
+        <h1>Welcome To OcotoOps Academy</h1>
+        <p class="lead">A colourful UI demo with a simple calculator — (Version 1)</p>
+      </div>
+    </header>
+
+    <div class="card" id="calculatorCard">
+      <h3>Simple Calculator</h3>
+      <div class="calculator">
+        <div class="calc-input">
+          <input id="a" type="number" placeholder="Number A" />
+          <select id="op">
+            <option value="+">+</option>
+            <option value="-">−</option>
+            <option value="*">×</option>
+            <option value="/">÷</option>
+          </select>
+          <input id="b" type="number" placeholder="Number B" />
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn-primary" id="calcBtn">Calculate</button>
+          <button class="btn-clear" id="clearBtn">Clear</button>
+        </div>
+
+        <div class="result" id="result">Result: —</div>
+      </div>
+
+      <footer>Tip: Try decimals and negative numbers. Division by zero is handled.</footer>
+    </div>
+  </div>
+
+  <script>
+    function calculate(){
+      const a = parseFloat(document.getElementById('a').value) || 0;
+      const b = parseFloat(document.getElementById('b').value) || 0;
+      const op = document.getElementById('op').value;
+      let res;
+      switch(op){
+        case '+': res = a + b; break;
+        case '-': res = a - b; break;
+        case '*': res = a * b; break;
+        case '/': res = (b === 0) ? 'Error (div by 0)' : (a / b); break;
+        default: res = 'N/A';
+      }
+      document.getElementById('result').textContent = 'Result: ' + res;
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', calculate);
+    document.getElementById('clearBtn').addEventListener('click', ()=> {
+      document.getElementById('a').value = '';
+      document.getElementById('b').value = '';
+      document.getElementById('result').textContent = 'Result: —';
+    });
+
+    // allow Enter on inputs
+    ['a','b'].forEach(id => {
+      document.getElementById(id).addEventListener('keyup', (e) => {
+        if(e.key === 'Enter') calculate();
+      });
+    });
+  </script>
+</body>
+</html>
