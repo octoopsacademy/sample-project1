@@ -14,15 +14,15 @@ spec:
     spec:
       containers:
       - name: octoopsacademy
-        image: <dockerhub-user>/octoopsacademy:latest
+        image: 657399551937.dkr.ecr.ap-south-1.amazonaws.com/sample-proj1:latest
         ports:
         - containerPort: 3000
         env:
         - name: DB_HOST
-          value: "<RDS_ENDPOINT>"
+          value: "my-db.cluster-cjm88m4wo4wp.ap-south-1.rds.amazonaws.com"
         - name: DB_USER
-          value: "<DB_USER>"
+          value: "postgres"
         - name: DB_PASS
-          value: "<DB_PASS>"
+          value: "OctoOps123"
         - name: DB_NAME
-          value: "octoopsdb"
+          value: "postgres"
