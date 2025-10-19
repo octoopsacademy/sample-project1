@@ -16,7 +16,7 @@ spec:
       - name: octoopsacademy
         image: 657399551937.dkr.ecr.ap-south-1.amazonaws.com/sample-proj1:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         env:
         - name: DB_HOST
           value: "my-db.cluster-cjm88m4wo4wp.ap-south-1.rds.amazonaws.com"
