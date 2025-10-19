@@ -22,16 +22,10 @@ pipeline {
 
         stage('Configure AWS & Kubeconfig') {
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                                  credentialsId: 'aws-creds',
-                                  usernameVariable: 'AWS_ACCESS_KEY_ID',
-                                  passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                 withAWS(credentials: 'aws-creds', region: "$AWS_REGION") {
                     sh '''
-                        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                        aws configure set default.region $AWS_REGION
+                        echo "AWS credentials configured by withAWS"
                     '''
-                }
                 
                 // Write kubeconfig from Jenkins secret
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
@@ -42,14 +36,16 @@ pipeline {
                 }
             }
         }
-
+     }
         stage('Login to ECR') {
             steps {
-                sh '''
-                    aws ecr get-login-password --region $AWS_REGION \
-                    | docker login --username AWS --password-stdin $IMAGE
-                '''
+                withAWS(credentials: 'aws-creds', region: "$AWS_REGION") {
+                    sh '''
+                        aws ecr get-login-password --region $AWS_REGION \
+                        | docker login --username AWS --password-stdin $IMAGE
+                    '''
             }
+        }
         }
 
         stage('Build Docker Image') {
