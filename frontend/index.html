@@ -58,7 +58,26 @@ async function fetchUsers(){
     const el = document.getElementById('users');
     if(!data.length) el.innerHTML = '<p class="small">No users yet.</p>';
     else{
-      const rows = data.map(u=>`<tr><td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td class="small">${new Date(u.created_at).toLocaleString()}</td></tr>`).join('');
+      const rows = data.map(u => `
+  <tr>
+    <td>${escapeHtml(u.name)}</td>
+    <td>${escapeHtml(u.email)}</td>
+    <td class="small">${new Date(u.created_at).toLocaleString()}</td>
+    <td>
+      <button onclick="deleteUser(${u.id})" style="background:#e11d48;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;">
+        Delete
+      </button>
+    </td>
+  </tr>
+`).join('');
+el.innerHTML = `
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Added</th><th>Action</th></tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+
       el.innerHTML = `<table><thead><tr><th>Name</th><th>Email</th><th>Added</th></tr></thead><tbody>${rows}</tbody></table>`;
     }
   }catch(e){document.getElementById('users').innerText='Could not load users.'}
