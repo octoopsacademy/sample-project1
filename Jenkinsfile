@@ -53,7 +53,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build --no-cache -t $ECR_REPO:$IMAGE_TAG -f Dockerfile1 --build-arg APP_DIR=app-v1 .
+                    docker build -t $ECR_REPO:$IMAGE_TAG .
                 '''
             }
         }
