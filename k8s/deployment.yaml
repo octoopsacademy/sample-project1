@@ -19,10 +19,10 @@ spec:
         - containerPort: 80
         env:
         - name: DB_HOST
-          value: "my-db.cluster-cjm88m4wo4wp.ap-south-1.rds.amazonaws.com"
+          value: "my-sql-db.cjm88m4wo4wp.ap-south-1.rds.amazonaws.com"
         - name: DB_USER
-          value: "postgres"
+          value: "admin"
         - name: DB_PASS
           value: "OctoOps123"
         - name: DB_NAME
-          value: "postgres"
+          value: "octoopsdb"
