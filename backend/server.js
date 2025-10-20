@@ -49,6 +49,24 @@ app.post('/api/addUser', async (req,res)=>{
   }catch(e){console.error(e);res.status(500).json({error:'db'})}
 });
 
+// Delete user by ID
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const [result] = await pool.query('DELETE FROM users WHERE id = ?', [userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'db delete error' });
+  }
+});
+
+
 // health
 app.get('/health', (req,res)=>res.json({ok:true}));
 
